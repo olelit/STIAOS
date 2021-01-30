@@ -31,5 +31,17 @@ namespace Lab1.Client
         {
 
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Task.Run(() =>
+            {
+                string ip = textBox1.Text;
+                string port = textBox2.Text;
+                _Server.SetParams(ip, port, textBox3);
+                _Server.Send(new int[] { (int)numericUpDown1.Value, (int)numericUpDown2.Value });
+            }
+);
+        }
     }
 }

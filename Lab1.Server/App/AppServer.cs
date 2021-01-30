@@ -1,9 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Windows.Forms;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace Lab1.Server.App
 {
@@ -36,6 +41,7 @@ namespace Lab1.Server.App
                 IPAddress localAddr = IPAddress.Parse(IP);
                 server = new TcpListener(localAddr, Port);
                 server.Start();
+                byte[] data = new byte[256];
                 OutputInfo("Текущий порт: " + Port.ToString());
                 while (true)
                 {
@@ -43,10 +49,31 @@ namespace Lab1.Server.App
                     TcpClient client = server.AcceptTcpClient();
                     OutputInfo("Подключен клиент. Выполнение запроса...");
                     NetworkStream stream = client.GetStream();
-                    string response = "Привет мир";
-                    byte[] data = Encoding.UTF8.GetBytes(response);
+                    StringBuilder builder = new StringBuilder();
+                    int bytes = 0;
+                    do
+                    {
+                        bytes = stream.Read(data, 0, data.Length);
+                        builder.Append(Encoding.Unicode.GetString(data, 0, bytes));
+                    }
+                    while (stream.DataAvailable);
+
+                    string mes = builder.ToString();
+
+
+                    XmlDocument xmlDoc = new XmlDocument();
+                    xmlDoc.LoadXml(mes);
+                    XmlNodeList ints = xmlDoc.GetElementsByTagName("int");
+                    int output = 1;
+                    foreach (XmlElement item in ints)
+                    {
+                        output *= int.Parse(item.InnerText);
+                        OutputInfo(item.InnerText);
+                    }
+
+                    data = Encoding.Unicode.GetBytes("result: "+ output);
                     stream.Write(data, 0, data.Length);
-                    OutputInfo(string.Format("Отправлено сообщение: {0}", response));
+
                     stream.Close();
                     client.Close();
                 }
