@@ -7,7 +7,20 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Button Click="Ipconfig_Click" Content="ipconfig" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="25" Width="92"/>
-        <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="134,162,10,10"/>
+        <Button Click="Ipconfig_ClickAsync" Content="IPCONFIG" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="25" Width="92"/>
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" Margin="120,10,0,10">
+
+            <TextBlock Name="output" Background="DarkBlue" Foreground="White" Padding="10px"/>
+
+        </ScrollViewer>
+        <Button Click="Arp_Click" Content="ARP" HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top" Height="25" Width="92"/>
+        <Button Click="NBTSTAT_Click" Content="NBTSTAT " HorizontalAlignment="Left" Margin="10,70,0,0" VerticalAlignment="Top" Height="25" Width="92"/>
+        <Button Click="GETMAC_Click" Content="GETMAC" HorizontalAlignment="Left" Margin="10,100,0,0" VerticalAlignment="Top" Height="25" Width="92"/>
+        <Button Click="NETSH_Click" Content="NETSH" HorizontalAlignment="Left" Margin="10,130,0,0" VerticalAlignment="Top" Height="25" Width="92"/>
+        <Button Click="NET_Click" Content="NET" HorizontalAlignment="Left" Margin="10,160,0,0" VerticalAlignment="Top" Height="25" Width="92"/>
+        <Button Click="PING_Click" Content="PING" HorizontalAlignment="Left" Margin="10,190,0,0" VerticalAlignment="Top" Height="25" Width="92"/>
+        <Button Click="ROUTE_Click" Content="ROUTE" HorizontalAlignment="Left" Margin="10,220,0,0" VerticalAlignment="Top" Height="25" Width="92"/>
+        <Button Click="TELNET_Click" Content="TELNET" HorizontalAlignment="Left" Margin="10,250,0,0" VerticalAlignment="Top" Height="25" Width="92"/>
+        <Button Click="TRACERT_ClickAsync" Content="TRACERT" HorizontalAlignment="Left" Margin="10,280,0,0" VerticalAlignment="Top" Height="25" Width="92"/>
     </Grid>
 </Window>

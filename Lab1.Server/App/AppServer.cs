@@ -51,12 +51,12 @@ namespace Lab1.Server.App
                     NetworkStream stream = client.GetStream();
                     StringBuilder builder = new StringBuilder();
                     int bytes = 0;
-                    do
-                    {
-                        bytes = stream.Read(data, 0, data.Length);
-                        builder.Append(Encoding.Unicode.GetString(data, 0, bytes));
-                    }
-                    while (stream.DataAvailable);
+                        do
+                        {
+                            bytes = stream.Read(data, 0, data.Length);
+                            builder.Append(Encoding.Unicode.GetString(data, 0, bytes));
+                        }
+                        while (stream.DataAvailable);
 
                     string mes = builder.ToString();
 

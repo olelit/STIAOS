@@ -29,17 +29,20 @@ namespace ScanPort
                 int[] range = { (int)numericUpDown1.Value, (int)numericUpDown2.Value };
                 string ip = textBox1.Text;
 
+                if (_ScanTask != null && _ScanTask.Status.Equals(TaskStatus.Running))
+                {
+                    _Cts.Cancel();
+                    _Cts = new CancellationTokenSource();
+                }
 
                 dataGridView1.Rows.Clear();
-                _ScanTask = Task.Factory.StartNew(() =>
+                _ScanTask = Task.Run(() =>
                     {
-                        if (!_Cts.Token.IsCancellationRequested)
-                        {
-                            _Scan.Scan(ip, range, dataGridView1);
-                        }
+                        _Scan.Scan(ip, range, dataGridView1, _Cts);
                     }, _Cts.Token
                 );
 
+                
             }
 
             private void button2_Click(object sender, EventArgs e)
@@ -49,5 +52,10 @@ namespace ScanPort
                     _Cts.Cancel();
                 }
             }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

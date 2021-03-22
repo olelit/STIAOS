@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace ScanPort.App
@@ -16,28 +17,35 @@ namespace ScanPort.App
             });
         }
 
-        public void Scan(string ip, int[] range, DataGridView dataGridView)
+        public void Scan(string ip, int[] range, DataGridView dataGridView, CancellationTokenSource ct)
         {
-            string status = "";
-            Color color = Color.Red;
-            for (int i = range[0]; i <= range[1]; i++)
+            while (ct.Token.IsCancellationRequested == false)
             {
-                using (TcpClient tcpClient = new TcpClient())
+                string status = "";
+                Color color = Color.Red;
+                for (int i = range[0]; i <= range[1]; i++)
                 {
-                    try
+                    using (TcpClient tcpClient = new TcpClient())
                     {
-                        tcpClient.Connect(ip, i);
-                        status = "Доступен";
-                        color = Color.GreenYellow;
+                        try
+                        {
+                            tcpClient.Connect(ip, i);
+                            status = "Доступен";
+                            color = Color.GreenYellow;
+                        }
+                        catch (Exception)
+                        {
+                            status = "Недоступен";
+                            color = Color.Red;
+                        }
                     }
-                    catch (Exception)
-                    {
-                        status = "Недоступен";
-                        color = Color.Red;
-                    }
+                    if (ct.Token.IsCancellationRequested)
+                        break;
+                    Output(i, status, dataGridView, color);
                 }
-                Output(i, status, dataGridView, color);
+                break;
             }
+
         }
     }
 }
